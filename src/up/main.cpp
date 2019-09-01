@@ -1,25 +1,34 @@
 #include "config.hpp"
-#include "frame_timer.hpp"
-#include "field.hpp"
 #include "event_logger.hpp"
 #include "events.hpp"
+#include "field.hpp"
+#include "frame_timer.hpp"
+#include "view.hpp"
+#include "game.hpp"
 
 int main()
 {
-    auto config = Config{};
-
-    auto field = Field{};
     auto eventLogger = EventLogger{};
 
-    auto frameTimer = FrameTimer{config.gameFps};
-    for (;;) {
+    auto game = Game{};
+    auto view = View{};
+
+    auto frameTimer = FrameTimer{config().gameFps};
+    while (view.isAlive()) {
+        view.processInputEvents();
+
         auto framesPassed = frameTimer();
         for (auto i = framesPassed; i > 0; i--) {
-            field.update(frameTimer.delta());
+            game.update(frameTimer.delta());
         }
 
         if (framesPassed > 0) {
             coreEvents.send();
+        }
+
+        if (framesPassed > 0) {
+            view.update(frameTimer.delta() * framesPassed);
+            view.draw();
         }
     }
 }

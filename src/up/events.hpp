@@ -13,4 +13,7 @@ struct EntityMove {
     Point position;
 };
 
+struct StartNewGame {};
+struct GameStarted {};
+
 inline EventQueue coreEvents;
