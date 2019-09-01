@@ -1,0 +1,9 @@
+add_executable(up
+    entity_pool.cpp
+    event_logger.cpp
+    field.cpp
+    frame_timer.cpp
+    main.cpp
+    task_pool.cpp
+    ticker.cpp
+)
